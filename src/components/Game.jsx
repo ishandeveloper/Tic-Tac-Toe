@@ -39,9 +39,12 @@ export default class Game extends Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const draw = checkDraw(current.squares);
+    
 
     let status;
     let PlayAgain;
+    
     if (winner) {
       status = "Winner is " + winner;
       PlayAgain = (
@@ -52,7 +55,19 @@ export default class Game extends Component {
           Wanna Play Again?
         </button>
       );
-    } else {
+    }
+    else if(draw){
+      status = "Oops, It's a draw !";
+      PlayAgain = (
+        <button
+          className="play-again-btn"
+          onClick={() => history.map(() => this.jumpTo(0))}
+        >
+          Wanna Play Again?
+        </button>
+      );
+    }
+    else {
       status = (this.state.xIsNext ? "X" : "O") + "'s Turn";
     }
 
@@ -93,4 +108,16 @@ function calculateWinner(squares) {
   }
 
   return null;
+}
+
+function checkDraw(squares){
+  let draw=true;
+  squares.forEach(square=>{
+    if(square==null){
+      draw=false;
+    }
+  });
+
+  return draw;
+
 }
